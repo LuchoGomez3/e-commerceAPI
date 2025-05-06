@@ -1,6 +1,9 @@
 from fastapi import FastAPI
-from core.config import EnvironmentOption, settings
 from fastapi.middleware.cors import CORSMiddleware
+
+from core.config import EnvironmentOption, settings
+from core.router import get_global_router
+from core.contextmannager import lifespan
 
 def create_fastapi_app() -> FastAPI:
 
@@ -10,7 +13,7 @@ def create_fastapi_app() -> FastAPI:
         port=8000,
         reload=True if settings.ENVIRONMENT != EnvironmentOption.PRODUCTION else False,
         workers=1,
-        #lifespan=lifespan,
+        lifespan=lifespan,
     )
 
     # Cors conf
@@ -21,3 +24,7 @@ def create_fastapi_app() -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    app.include_router(get_global_router(), prefix="/api")
+
+    return app

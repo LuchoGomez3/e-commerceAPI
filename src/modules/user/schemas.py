@@ -10,6 +10,7 @@ class Gender(str, Enum):
     FEMALE = "female"
     OTHER = "other"
 
+
 # ------------------ Perfiles ------------------
 class ProfileBase(BaseModel):
     name: str = Field(min_length=1, max_length=32)

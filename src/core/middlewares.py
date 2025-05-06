@@ -15,7 +15,10 @@ def camel_to_snake(name: str) -> str:
 def convert_dict_keys_to_snake_case(data: Any) -> Any:
     """Recursively convert all dictionary keys from camelCase to snake_case."""
     if isinstance(data, dict):
-        return {camel_to_snake(k): convert_dict_keys_to_snake_case(v) for k, v in data.items()}
+        return {
+            camel_to_snake(k): convert_dict_keys_to_snake_case(v)
+            for k, v in data.items()
+        }
     elif isinstance(data, list):
         return [convert_dict_keys_to_snake_case(item) for item in data]
     return data
@@ -44,7 +47,9 @@ def contains_key_camel_case(data: Dict[str, Any]) -> bool:
     return False
 
 
-async def camel_case_to_snake_case_middleware(request: Request, call_next: Callable) -> Any:
+async def camel_case_to_snake_case_middleware(
+    request: Request, call_next: Callable
+) -> Any:
     """Middleware to convert camelCase request bodies to snake_case."""
     if request.method in ["POST", "PUT", "PATCH"]:
         try:
@@ -64,7 +69,9 @@ async def camel_case_to_snake_case_middleware(request: Request, call_next: Calla
     return response
 
 
-async def custom_exception_handler(request: Request, exc: Union[HTTPException, Exception]) -> JSONResponse:
+async def custom_exception_handler(
+    request: Request, exc: Union[HTTPException, Exception]
+) -> JSONResponse:
     print(f"Exception: {exc}")
     if isinstance(exc, HTTPException):
         return JSONResponse(
